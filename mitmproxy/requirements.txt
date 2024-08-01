@@ -1,0 +1,2 @@
+mitmproxy==10.3.1
+jsbeautifier==1.15.1

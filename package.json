@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "escodegen": "^2.1.0",
+    "jscodeshift": "^0.16.1",
+    "npm": "^10.8.2",
+    "recast": "^0.23.9"
+  }
+}
