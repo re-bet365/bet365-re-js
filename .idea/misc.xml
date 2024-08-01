@@ -3,8 +3,4 @@
   <component name="ProjectRootManager">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="ScalaSbtSettings">
-    <option name="customLauncherPath" />
-    <option name="customVMPath" />
-  </component>
 </project>
