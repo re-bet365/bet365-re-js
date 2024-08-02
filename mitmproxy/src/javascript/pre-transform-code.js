@@ -1,4 +1,4 @@
-var console_logger = function(string) {
+var consoleLogger = function(string) {
     if(console) {
         console.log(string);
     }
@@ -11,14 +11,14 @@ var print = function(label, input) {
             try {
                 object[key] = object[key];
             } catch (exception) {
-                console_logger(exception)
+                consoleLogger(exception)
             }
         });
-        console_logger(label + ": " + toJsonString(object));
+        consoleLogger(label + ": " + toJsonString(object));
     } else if(typeof input === "object") {
-        console_logger(label + ": " + toJsonString(input));
+        consoleLogger(label + ": " + toJsonString(input));
     } else {
-        console_logger(label + ": " + input);
+        consoleLogger(label + ": " + input);
     }
 };
 

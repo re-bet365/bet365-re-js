@@ -13,8 +13,9 @@ class JavascriptExtractor:
     output_base_path = str((current_directory / "../../../../output").resolve()) + "/"
     javascript_base_path = str((current_directory / "../../javascript").resolve()) + "/"
     file_delimiter = b'\x03'b'\x06'b'\x05'
-    obfuscated_start_template = "(function(){ %svar _0x1e16="
-    obfuscated_code_logger_file_name = "obfuscated-code-logger.js"
+    obfuscated_start_string = "(function(){ var _0x1e16="
+    pre_transform_code_file_name = "pre-transform-code.js"
+    post_transform_code_file_name = "post-transform-code.js"
     replace_contents: dict = {}
     node_executable_file: str
     function_names: list
@@ -44,9 +45,8 @@ class JavascriptExtractor:
                 sent_bytes = received_file_content_bytes
                 start_byte = received_file_content_bytes[0:1]
                 content_bytes = received_file_content_bytes[1:]
-                obfuscated_start = self.obfuscated_start_template % ""
-                content_start_string = content_bytes[:len(obfuscated_start)].decode()
-                is_obfuscated_content = content_start_string.startswith(obfuscated_start)
+                content_start_string = content_bytes[:len(self.obfuscated_start_string)].decode()
+                is_obfuscated_content = content_start_string.startswith(self.obfuscated_start_string)
 
                 if is_obfuscated_content:
                     logging.info("Intercepting response: " + flow.request.url)
@@ -60,11 +60,12 @@ class JavascriptExtractor:
                     deobfuscated_file_name = JavascriptExtractor.__get_file_name(self.output_base_path, received_file_content_bytes, file_identifier, "deobfuscated", index)
                     subprocess.run([self.node_executable_file, refactor_file, received_file_name, deobfuscated_file_name], stdout=subprocess.PIPE)
 
-                    logger_content_string = Path(self.javascript_base_path + self.obfuscated_code_logger_file_name).read_text()
+                    pre_transform_code_content_string = Path(self.javascript_base_path + self.pre_transform_code_file_name).read_text()
                     deobfuscated_file_content_minified_string = jsmin(Path(deobfuscated_file_name).read_text())
+                    post_transform_code_content_string = Path(self.javascript_base_path + self.post_transform_code_file_name).read_text()
                     for replace_content in self.replace_contents:
                         deobfuscated_file_content_minified_string = deobfuscated_file_content_minified_string.replace(replace_content, self.replace_contents[replace_content])
-                    complete_file_content_string = logger_content_string + deobfuscated_file_content_minified_string
+                    complete_file_content_string = pre_transform_code_content_string + deobfuscated_file_content_minified_string + post_transform_code_content_string
 
                     sent_file_name = JavascriptExtractor.__get_file_name(self.output_base_path, received_file_content_bytes, file_identifier, "sent", index)
                     sent_file = JavascriptExtractor.__create_file(sent_file_name, "sent")
