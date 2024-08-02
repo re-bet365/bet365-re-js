@@ -80,6 +80,22 @@ The obfuscated javascript is deobfuscated on the fly (at runtime) so even if bet
 ### Recommendations
 For starting the browser, the recommendation is to create a new chrome profile just for `mitmproxy` request/response interception.
 In the future use of `obfuscated-code-logger.js` might add a lot of noise to console debugging log.
+`Clear Cache` extension is useful for clearing the cache from the toolbar or binding keyboard shortcut.
+
+## Development
+For ease of develop you can put the obfuscated javascript in `mitmproxy/src/javascript/obfuscated-original.js` and compile `refactor-obfuscated-code-jscodeshift.js` each time there is change.
+```
+watchexec -e js "touch mitmproxy/src/python/download-payload.py && \
+node mitmproxy/src/javascript/refactor-obfuscated-code-jscodeshift.js \
+mitmproxy/src/javascript/obfuscated-original.js \
+mitmproxy/src/javascript/deobfuscated.js"
+```
+This will look for any changes in any `*.js` files (apart from `obfuscated-original.js` and `deobfuscated.js`) and recompile the deobfuscation transform.
+
+### Debugging state
+If you started the chrome browser with `--enable-logging --v=1` flag then you don't need open you browser to see the console output.
+The console output can be viewed in `<user-data-dir>/chrome_debug.log`.
+
 
 ### Current and future work
 The current implementation only reverse engineers the javascript component but the control flow javascript is dictated by the `tape`.

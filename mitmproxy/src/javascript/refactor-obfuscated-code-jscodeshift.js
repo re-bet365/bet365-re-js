@@ -352,7 +352,8 @@ var refactorParameters = {
     '_0x463095': 'stringIndex',
     '_0xc1e270': 'unused',
     '_0xb8c9bb': 'rotateTimes',
-    '_0xfd3749': 'initialArgs'
+    '_0xfd3749': 'initialArgs',
+    '_0x2f0753': 'initialArguments'
 };
 var membershipRefactor = new Set([
     'push',

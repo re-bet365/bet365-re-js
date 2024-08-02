@@ -1,2 +1,3 @@
 mitmproxy==10.3.1
 jsbeautifier==1.15.1
+rjsmin==1.2.2
