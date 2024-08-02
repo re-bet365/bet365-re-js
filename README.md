@@ -88,13 +88,28 @@ For ease of develop you can put the obfuscated javascript in `mitmproxy/src/java
 watchexec -e js "touch mitmproxy/src/python/download-payload.py && \
 node mitmproxy/src/javascript/refactor-obfuscated-code-jscodeshift.js \
 mitmproxy/src/javascript/obfuscated-original.js \
-mitmproxy/src/javascript/deobfuscated.js"
+mitmproxy/src/javascript/deobfuscated.js && \
+node mitmproxy/src/javascript/pre-transform-code.js"
 ```
 This will look for any changes in any `*.js` files (apart from `obfuscated-original.js` and `deobfuscated.js`) and recompile the deobfuscation transform.
 
 ### Debugging state
 If you started the chrome browser with `--enable-logging --v=1` flag then you don't need open you browser to see the console output.
 The console output can be viewed in `<user-data-dir>/chrome_debug.log`.
+
+To view just the json part of the log you can perform
+```
+tail -f <user-data-dir>/chrome_debug.log | sed -En "s/.*inside.*\\]: (.*)\", source\:  \(3\)/\1/p"
+```
+
+## Global state
+* `globalState[35]`: is the execution context of the tape. This may contain the `globalStateWriteIndex`, `globalStateReadIndex`, bits for manipulation, length of the array, etc... basically
+all sorts of things that point to the tape for the current execution context.
+* 
+
+## Blocked
+### Devtool
+When the devtool is open the `tapeKeywords[27269]: ""` is added. 
 
 
 ### Current and future work

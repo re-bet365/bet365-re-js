@@ -2,3 +2,4 @@
 /shelf/
 /workspace.xml
 sbt.xml
+scala_compiler.xml
