@@ -1,1 +1,1 @@
-consoleLogger(tapeKeywords);
+//consoleLogger(tapeKeywords);
