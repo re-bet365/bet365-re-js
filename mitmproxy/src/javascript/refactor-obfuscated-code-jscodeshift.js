@@ -1,3 +1,6 @@
+// used to deobfuscate the obfuscated javascript code on the fly.
+// this is deprecated in favour of using deobfuscated.js directly as bet365 keeps on changing the obfuscated code regularly.
+// if this approach is to be used we need a CI/CD process in place to detect whenever bet365 changes their code.
 var fs = require('node:fs');
 var { argv } = require('node:process');
 var j = require('jscodeshift');
