@@ -45,9 +45,9 @@ node --version
 
 If not installed node or use nvm to install and use it.
 ```
-nvm install v20.16.0 && nvm use v20.16.0
+nvm install v20.18.0 && nvm use v20.18.0
 ```
-At the time of writing the latest LTS version of node is `v20.16.0`.
+At the time of writing the latest LTS version of node is `v20.18.0`.
 
 ### Install node dependencies
 ```
@@ -75,11 +75,12 @@ For windows
 ```
 
 The output of the intercepted response files are in `/output` directory.
-The obfuscated javascript is deobfuscated on the fly (at runtime) so even if bet365 changes the obfuscation implementation it should be pretty quick to get it up and running again.
+Bet365 has started to change the variable names frequently and it has been unviable to deobfuscated the javascript on the fly as the variable keep on changing.
+The new approach is the replace the obfuscated code the deobfuscated code.
 
 ### Recommendations
 For starting the browser, the recommendation is to create a new chrome profile just for `mitmproxy` request/response interception.
-In the future use of `obfuscated-code-logger.js` might add a lot of noise to console debugging log.
+In the future, use of `obfuscated-code-logger.js` might add a lot of noise to console debugging log.
 `Clear Cache` extension is useful for clearing the cache from the toolbar or binding keyboard shortcut.
 
 ## Development
