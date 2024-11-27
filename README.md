@@ -2,6 +2,12 @@
 ## Purpose
 This repo aims to reverse engineer the obfuscated javascript in bet365.com.
 
+## Updates from bet365
+We understand that bet365 frequently updates their obfuscated code.
+To address this, we will:
+* Establish a CI/CD pipeline to identify precisely when changes are made.
+* Maintain a functional backup script to ensure the deobfuscation process continues to work, even when bet365 updates their code.
+
 ## Terms & Licenses
 This repo is for educational purposes only.
 This repo is to be distributed as is with no warranty expressed or implied, and no guarantee for accuracy or applicability to any purpose.
