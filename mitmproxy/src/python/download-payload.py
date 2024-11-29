@@ -13,9 +13,10 @@ class JavascriptExtractor:
     output_base_path = str((current_directory / "../../../../output").resolve()) + "/"
     javascript_base_path = str((current_directory / "../../javascript").resolve()) + "/"
     file_delimiter = b'\x03'b'\x06'b'\x05'
-    obfuscated_start_string = "(function(){ var _0x1e16="
+    obfuscated_start_string = "(function(){ var _0x7c91="
     pre_transform_code_file_name = "pre-transform-code.js"
     post_transform_code_file_name = "post-transform-code.js"
+    refactor_script_on_fly = False
     replace_contents: dict = {}
     node_executable_file: str
     function_names: list
@@ -56,16 +57,20 @@ class JavascriptExtractor:
                         received_file.write(content_bytes)
                         received_file.close()
 
-                    refactor_file = Path(self.javascript_base_path + "/refactor-obfuscated-code-jscodeshift.js")
-                    deobfuscated_file_name = JavascriptExtractor.__get_file_name(self.output_base_path, received_file_content_bytes, file_identifier, "deobfuscated", index)
-                    subprocess.run([self.node_executable_file, refactor_file, received_file_name, deobfuscated_file_name], stdout=subprocess.PIPE)
-
-                    pre_transform_code_content_string = Path(self.javascript_base_path + self.pre_transform_code_file_name).read_text()
-                    deobfuscated_file_content_minified_string = jsmin(Path(deobfuscated_file_name).read_text())
-                    post_transform_code_content_string = Path(self.javascript_base_path + self.post_transform_code_file_name).read_text()
-                    for replace_content in self.replace_contents:
-                        deobfuscated_file_content_minified_string = deobfuscated_file_content_minified_string.replace(replace_content, self.replace_contents[replace_content])
-                    complete_file_content_string = pre_transform_code_content_string + deobfuscated_file_content_minified_string + post_transform_code_content_string
+                    # either deobfuscate on the fly or get the contents of deobfuscated.js
+                    if self.refactor_script_on_fly:
+                        refactor_file = Path(self.javascript_base_path + "/refactor-obfuscated-code-jscodeshift.js")
+                        deobfuscated_file_name = JavascriptExtractor.__get_file_name(self.output_base_path, received_file_content_bytes, file_identifier, "deobfuscated", index)
+                        subprocess.run([self.node_executable_file, refactor_file, received_file_name, deobfuscated_file_name], stdout=subprocess.PIPE)
+                        pre_transform_code_content_string = Path(self.javascript_base_path + self.pre_transform_code_file_name).read_text()
+                        deobfuscated_file_content_minified_string = jsmin(Path(deobfuscated_file_name).read_text())
+                        post_transform_code_content_string = Path(self.javascript_base_path + self.post_transform_code_file_name).read_text()
+                        for replace_content in self.replace_contents:
+                            deobfuscated_file_content_minified_string = deobfuscated_file_content_minified_string.replace(replace_content, self.replace_contents[replace_content])
+                        complete_file_content_string = pre_transform_code_content_string + deobfuscated_file_content_minified_string + post_transform_code_content_string
+                    else:
+                        deobfuscated_file = Path(self.javascript_base_path + "/deobfuscated.js")
+                        complete_file_content_string = deobfuscated_file.read_text()
 
                     sent_file_name = JavascriptExtractor.__get_file_name(self.output_base_path, received_file_content_bytes, file_identifier, "sent", index)
                     sent_file = JavascriptExtractor.__create_file(sent_file_name, "sent")

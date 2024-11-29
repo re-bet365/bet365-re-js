@@ -1,3 +1,6 @@
+// used to deobfuscate the obfuscated javascript code on the fly.
+// this is deprecated in favour of using deobfuscated.js directly as bet365 keeps on changing the obfuscated code regularly.
+// if this approach is to be used we need a CI/CD process in place to detect whenever bet365 changes their code.
 var fs = require('node:fs');
 var { argv } = require('node:process');
 var j = require('jscodeshift');
@@ -19,9 +22,9 @@ if (!deobfuscatedJsFileName) {
 var rawObfuscatedJsCode = fs.readFileSync(rawObfuscatedJsFileName).toString();
 
 var refactorVariables = {
-    '_0x1e16': 'keywords',
-    '_0x35ab': 'getKeywordName',
-    '_0x35ab73': 'shiftKeywords',
+    '_0x7c91': 'keywords',
+    '_0x2823': 'getKeywordName',
+    '_0x28231f': 'shiftKeywords',
     '_0x5be234': 'getKeywordName',
     '_0x3b48d2': 'getKeywordName',
     '_0x31e357': 'getKeywordName',
@@ -55,7 +58,7 @@ var refactorVariables = {
     '_0x5758b8': 'flattenedArrayIndex',
     '_0x57ec14': 'j',
     '_0x3876b6': 'i',
-    '_0x38dc1b': 'modules',
+    '_0x99d8a4': 'modules',
     '_0x588211': 'globalState',
     '_0x478891': 'tape',
     '_0x4951e9': 'functions',
@@ -321,8 +324,8 @@ var refactorFunctions = {
 };
 var refactorParameters = {
     // the length of the array is the length of the expected scope
-    '_0x2461da': ['keywordArray', 'keywordArray', 'index'],
-    '_0x1e165c': ['shiftCount', 'unused'],
+    '_0x588017': ['keywordArray', 'keywordArray', 'index'],
+    '_0x7c9151': ['shiftCount', 'unused'],
     '_0x38dc1b': ['shiftBy'],
     '_0x53d8ee': 'moduleKey',
     '_0x38dc1b': 'moduleArray',

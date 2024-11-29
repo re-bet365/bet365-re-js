@@ -51,11 +51,17 @@ node --version
 
 If not installed node or use nvm to install and use it.
 ```
-nvm install v20.16.0 && nvm use v20.16.0
+nvm install v22.11.0 && nvm use v22.11.0
 ```
-At the time of writing the latest LTS version of node is `v20.16.0`.
+At the time of writing the latest LTS version of node is `v22.11.0`.
 
 ### Install node dependencies
+Update npm if you were previously using npm
+```
+npm update -g npm
+```
+
+and install npm dependencies
 ```
 npm install
 ```
@@ -67,9 +73,10 @@ Start the `mitmproxy` with
 ```
 Start the browser with the proxy setting pointing to `mitmproxy`.
 
+The `project-dir` must be absolute path to this project directory.
 For mac
 ```
-open -a "Google Chrome" --args --proxy-server=http://localhost:8080 --enable-logging --v=1 --user-data-dir=<user-data-dir>
+open -a "Google Chrome" --args --proxy-server=http://localhost:8080 --enable-logging --v=1 --user-data-dir=<project-dir>/output/tmp/chrome
 ```
 For linux
 ```
@@ -81,11 +88,12 @@ For windows
 ```
 
 The output of the intercepted response files are in `/output` directory.
-The obfuscated javascript is deobfuscated on the fly (at runtime) so even if bet365 changes the obfuscation implementation it should be pretty quick to get it up and running again.
+Bet365 has started to change the variable names frequently and it has been unviable to deobfuscated the javascript on the fly as the variable keep on changing.
+The new approach is the replace the obfuscated code the deobfuscated code.
 
 ### Recommendations
 For starting the browser, the recommendation is to create a new chrome profile just for `mitmproxy` request/response interception.
-In the future use of `obfuscated-code-logger.js` might add a lot of noise to console debugging log.
+In the future, use of `obfuscated-code-logger.js` might add a lot of noise to console debugging log.
 `Clear Cache` extension is useful for clearing the cache from the toolbar or binding keyboard shortcut.
 
 ## Development
