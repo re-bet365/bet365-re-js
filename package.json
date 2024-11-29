@@ -4,5 +4,12 @@
     "jscodeshift": "^0.16.1",
     "npm": "^10.8.2",
     "recast": "^0.23.9"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "eslint-plugin-jest": "^28.9.0",
+    "jest": "^29.7.0"
   }
 }
