@@ -1,6 +1,3 @@
-// used to deobfuscate the obfuscated javascript code on the fly.
-// this is deprecated in favour of using deobfuscated.js directly as bet365 keeps on changing the obfuscated code regularly.
-// if this approach is to be used we need a CI/CD process in place to detect whenever bet365 changes their code.
 var fs = require('node:fs');
 var { argv } = require('node:process');
 var j = require('jscodeshift');
@@ -21,12 +18,48 @@ if (!deobfuscatedJsFileName) {
 }
 var rawObfuscatedJsCode = fs.readFileSync(rawObfuscatedJsFileName).toString();
 
+var refactorParameters = {
+    // the length of the array is the length of the expected scope
+    '_0x588017': ['keywordArray', 'keywordArray', 'index'],
+    '_0x7c9151': ['shiftCount', 'unused'],
+    '_0x38dc1b': ['shiftBy'],
+    '_0x305252': 'moduleKey',
+    '_0x99d8a4': 'moduleArray',
+    '_0xc41d36': 'exportedModules',
+    '_0x3944d7': 'moduleKeys',
+    '_0xa64685': 'initialiseArguments',
+    '_0x56113d': 'exportedModules',
+    '_0x343255': 'tapeBase64',
+    '_0x502f29': 'initialiseModule',
+    '_0x3af2c4': 'expectErrorFree',
+    '_0x11efd2': 'error',
+    '_0x19519d': 'functionIndex',
+    '_0x58916a': 'base64Tape',
+    '_0x27e170': 'base64Tape',
+    '_0x2a2310': 'globalStateContexts',
+    '_0xfce44a': 'binaryString',
+    '_0x56a564': 'bitLength',
+    '_0x73b408': 'padValue',
+    '_0x244ed2': 'error',
+    '_0x4fa810': 'globalStateWriteIndex',
+    '_0xda9fcd': 'value',
+    '_0x1d870a': 'globalStateWriteIndex',
+    '_0x2d8cfa': 'value',
+    '_0x5ac09b': 'argumentArray',
+    '_0x897962': 'initialiseFunction',
+    '_0x458e1c': 'exportedModules',
+    '_0x463095': 'stringIndex',
+    '_0xc1e270': 'unused',
+    '_0xb8c9bb': 'rotateTimes',
+    '_0xfd3749': 'initialArgs',
+    '_0x2f0753': 'initialArguments'
+};
 var refactorVariables = {
     '_0x7c91': 'keywords',
     '_0x2823': 'getKeywordName',
-    '_0x28231f': 'shiftKeywords',
-    '_0x5be234': 'getKeywordName',
-    '_0x3b48d2': 'getKeywordName',
+    '_0x35ab73': 'shiftKeywords',
+    '_0x290a18': 'getKeywordName',
+    '_0x5d6725': 'getKeywordName',
     '_0x31e357': 'getKeywordName',
     '_0x269024': 'getKeywordName',
     '_0x1e78b6': 'getKeywordName',
@@ -57,7 +90,7 @@ var refactorVariables = {
     '_0x4a08c2': 'argumentsAtIndexLength',
     '_0x5758b8': 'flattenedArrayIndex',
     '_0x57ec14': 'j',
-    '_0x3876b6': 'i',
+    '_0x4b08bd': 'i',
     '_0x99d8a4': 'modules',
     '_0x588211': 'globalState',
     '_0x478891': 'tape',
@@ -65,11 +98,11 @@ var refactorVariables = {
     '_0x13ccc7': 'functionRef',
     '_0x2f9d74': 'i',
     '_0x2560dc': 'length',
-    '_0x4b586e': 'isModule',
-    '_0x36b9e1': 'isModule',
-    '_0x400d47': 'error',
-    '_0x21f1e2': 'getModule',
-    '_0x26ea4d': 'exportedModule',
+    '_0x70b4c2': 'isModule',
+    '_0x3d3831': 'isModule',
+    '_0x56455e': 'error',
+    '_0x4eecdf': 'getModule',
+    '_0x428c50': 'exportedModule',
     '_0x207f9a': 'i',
     '_0x207f9a': 'argumentIndex',
     '_0x4cbc65': 'argumentsExcludingTape',
@@ -314,49 +347,13 @@ var replaceVariables = {
     '_0x173146': 'window'
 }
 var refactorFunctions = {
-    '_0x21f1e2': 'getModule',
+    '_0x4eecdf': 'getModule',
     '_0x2facc3': 'bootstrapModule',
     '_0x50286d': 'initialiseState',
     '_0x68e20a': 'executeFunctionAtExecutionIndex',
     '_0x4fdfce': 'executeFunction',
     '_0x50ee92': 'base64ToBytes',
     '_0x5953e4': 'createPaddedBinaryString'
-};
-var refactorParameters = {
-    // the length of the array is the length of the expected scope
-    '_0x588017': ['keywordArray', 'keywordArray', 'index'],
-    '_0x7c9151': ['shiftCount', 'unused'],
-    '_0x38dc1b': ['shiftBy'],
-    '_0x53d8ee': 'moduleKey',
-    '_0x38dc1b': 'moduleArray',
-    '_0x2418ef': 'exportedModules',
-    '_0x1f8e23': 'moduleKeys',
-    '_0xe41d70': 'initialiseArguments',
-    '_0x56113d': 'exportedModules',
-    '_0x343255': 'tapeBase64',
-    '_0x502f29': 'initialiseModule',
-    '_0x3af2c4': 'expectErrorFree',
-    '_0x11efd2': 'error',
-    '_0x19519d': 'functionIndex',
-    '_0x58916a': 'base64Tape',
-    '_0x27e170': 'base64Tape',
-    '_0x2a2310': 'globalStateContexts',
-    '_0xfce44a': 'binaryString',
-    '_0x56a564': 'bitLength',
-    '_0x73b408': 'padValue',
-    '_0x244ed2': 'error',
-    '_0x4fa810': 'globalStateWriteIndex',
-    '_0xda9fcd': 'value',
-    '_0x1d870a': 'globalStateWriteIndex',
-    '_0x2d8cfa': 'value',
-    '_0x5ac09b': 'argumentArray',
-    '_0x897962': 'initialiseFunction',
-    '_0x458e1c': 'exportedModules',
-    '_0x463095': 'stringIndex',
-    '_0xc1e270': 'unused',
-    '_0xb8c9bb': 'rotateTimes',
-    '_0xfd3749': 'initialArgs',
-    '_0x2f0753': 'initialArguments'
 };
 var membershipRefactor = new Set([
     'push',
@@ -390,7 +387,7 @@ var removeVariables = new Set([
     'getKeywordName',
 ]);
 var removeClosest = {
-    '_0x2cf5bb': 'IfStatement',
+    '_0x431be5': 'IfStatement',
 };
 var keywordArguments = {
     '0x0': 'function',
