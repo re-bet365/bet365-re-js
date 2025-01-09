@@ -2,7 +2,7 @@ const {AstTransformer} = require("./refactor-obfuscated-code-jscodeshift-common"
 const j = require('jscodeshift');
 
 var refactorFunctions = {
-    '_0x4eecdf': 'getModule',
+    '_0x21f1e2': 'getModule',
     '_0x2facc3': 'bootstrapModule',
     '_0x50286d': 'initialiseState',
     '_0x68e20a': 'executeFunctionAtExecutionIndex',

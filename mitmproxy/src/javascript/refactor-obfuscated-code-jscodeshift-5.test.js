@@ -7,7 +7,7 @@ const j = require('jscodeshift');
 const { v4: uuidv4 } = require('uuid');
 const {FunctionRefactorTransformer} = require("./refactor-obfuscated-code-jscodeshift-5");
 
-const ast = j(`function _0x4eecdf() { return 0; }`);
+const ast = j(`function _0x21f1e2() { return 0; }`);
 
 describe("FunctionRefactorTransformer", () => {
     test("transform", () => {

@@ -7,7 +7,7 @@ const j = require('jscodeshift');
 const { v4: uuidv4 } = require('uuid');
 const {RefactorVariableTransformer} = require("./refactor-obfuscated-code-jscodeshift-2");
 
-const ast = j("var _0x7c91 = [];");
+const ast = j("var _0x1e16 = [];");
 
 describe("RefactorVariableTransformer", () => {
     test("transform", () => {

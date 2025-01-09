@@ -1,16 +1,16 @@
 const {AstTransformer} = require("./refactor-obfuscated-code-jscodeshift-common");
 const j = require('jscodeshift');
 
-const refactorParameters = {
+var refactorParameters = {
     // the length of the array is the length of the expected scope
-    '_0x588017': ['keywordArray', 'keywordArray', 'index'],
-    '_0x7c9151': ['shiftCount', 'unused'],
+    '_0x2461da': ['keywordArray', 'keywordArray', 'index'],
+    '_0x1e165c': ['shiftCount', 'unused'],
     '_0x38dc1b': ['shiftBy'],
-    '_0x305252': 'moduleKey',
-    '_0x99d8a4': 'moduleArray',
-    '_0xc41d36': 'exportedModules',
-    '_0x3944d7': 'moduleKeys',
-    '_0xa64685': 'initialiseArguments',
+    '_0x53d8ee': 'moduleKey',
+    '_0x38dc1b': 'moduleArray',
+    '_0x2418ef': 'exportedModules',
+    '_0x1f8e23': 'moduleKeys',
+    '_0xe41d70': 'initialiseArguments',
     '_0x56113d': 'exportedModules',
     '_0x343255': 'tapeBase64',
     '_0x502f29': 'initialiseModule',
