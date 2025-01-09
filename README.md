@@ -52,11 +52,16 @@ Make sure node is available
 node --version
 ```
 
-If not installed node or use nvm to install and use it.
+If not node is not installed then use nvm to install the version in `.nvmrc`
+Fish
+```fish
+nvm install (cat .nvmrc) && nvm use
 ```
-nvm install v22.11.0 && nvm use v22.11.0
+bash
+```zsh
+nvm install $(cat .nvmrc) && nvm use
 ```
-At the time of writing the latest LTS version of node is `v22.11.0`.
+At the time of writing the latest LTS version of node is `v22.13.0`.
 
 ### Install node dependencies
 Update npm if you were previously using npm
