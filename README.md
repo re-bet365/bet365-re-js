@@ -1,6 +1,6 @@
 # bet365 RE JS
 ## Purpose
-This repo aims to reverse engineer the obfuscated javascript in bet365.com.
+This repo aims to reverse engineer the obfuscated JavaScript in `bet365.com`.
 
 ## Updates from bet365
 We understand that bet365 frequently updates their obfuscated code.
@@ -20,12 +20,15 @@ The owner(s) of this repo wish to remain anonymous at this stage and support for
 * miniforge/miniconda (python)
 * nvm (nodejs)
 
-## Aim
-The aim of this repo is to reverse engineer `bet365.com` obfuscated javascript.
-The process of setting up the environment should be:
-* simple
-* easy
-* complete
+## Goal
+The goal of this repo is to reverse-engineer the obfuscated JavaScript from `bet365.com`.
+
+Setting up the environment should be:
+* Simple
+* Straightforward
+* Complete
+
+To keep things accessible, no TypeScript is used - just pure JavaScript as the common baseline.
 
 ## Getting started
 Using miniforge to set up a fresh python environment is recommended but if you wish to use your current python environment that is also fine.
@@ -88,7 +91,7 @@ For windows
 ```
 
 The output of the intercepted response files are in `/output` directory.
-Bet365 has started to change the variable names frequently and it has been unviable to deobfuscated the javascript on the fly as the variable keep on changing.
+Bet365 has started to change the variable names frequently and it has been unviable to deobfuscated the JavaScript on the fly as the variable keep on changing.
 The new approach is the replace the obfuscated code the deobfuscated code.
 
 ### Recommendations
@@ -97,15 +100,18 @@ In the future, use of `obfuscated-code-logger.js` might add a lot of noise to co
 `Clear Cache` extension is useful for clearing the cache from the toolbar or binding keyboard shortcut.
 
 ## Development
-For ease of develop you can put the obfuscated javascript in `mitmproxy/src/javascript/obfuscated-original.js` and compile `refactor-obfuscated-code-jscodeshift.js` each time there is change.
+For ease of develop you can put the obfuscated JavaScript in `mitmproxy/src/javascript/obfuscated-original.js` and compile `refactor-obfuscated-code-jscodeshift.js` each time there is change.
 ```
 watchexec -e js "touch mitmproxy/src/python/download-payload.py && \
 node mitmproxy/src/javascript/refactor-obfuscated-code-jscodeshift.js \
 mitmproxy/src/javascript/obfuscated-original.js \
-mitmproxy/src/javascript/deobfuscated.js && \
+mitmproxy/src/javascript/deobfuscated-output.js && \
 node mitmproxy/src/javascript/pre-transform-code.js"
 ```
 This will look for any changes in any `*.js` files (apart from `obfuscated-original.js` and `deobfuscated.js`) and recompile the deobfuscation transform.
+
+### Javascript AST manipulation
+For manipulating JavaScript AST https://astexplorer.net/ is a useful tool.
 
 ### Debugging state
 If you started the chrome browser with `--enable-logging --v=1` flag then you don't need open you browser to see the console output.
@@ -127,14 +133,14 @@ When the devtool is open the `tapeKeywords[27269]: ""` is added.
 
 
 ### Current and future work
-The current implementation only reverse engineers the javascript component but the control flow javascript is dictated by the `tape`.
+The current implementation only reverse engineers the JavaScript component but the control flow JavaScript is dictated by the `tape`.
 We will need to reverse engineer the `tape` for the complete reverse engineering.
 
-*Important:* Even if we find out how the javascript detects webdriver/playwright, please don't start scraping solely using those solution.
+*Important:* Even if we find out how the JavaScript detects webdriver/playwright, please don't start scraping solely using those solution.
 Scraping data using websocket is much faster and efficient it should be the go-to solution for scraping data.
 
 *Future Work*
-* find out how the javascript detects devtool being open
-* find out how the javascript detects webdriver/playwright being open
+* find out how the JavaScript detects devtool being open
+* find out how the JavaScript detects webdriver/playwright being open
 * reverse engineer the websocket so webdriver/playwright doesn't need to used for scraping data
 

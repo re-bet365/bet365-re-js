@@ -16,7 +16,7 @@ class JavascriptExtractor:
     obfuscated_start_string = "(function(){ var _0x7c91="
     pre_transform_code_file_name = "pre-transform-code.js"
     post_transform_code_file_name = "post-transform-code.js"
-    refactor_script_on_fly = False
+    refactor_script_on_fly = True
     replace_contents: dict = {}
     node_executable_file: str
     function_names: list
