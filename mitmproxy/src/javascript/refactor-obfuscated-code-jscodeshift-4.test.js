@@ -8,10 +8,10 @@ const { v4: uuidv4 } = require('uuid');
 const {ParameterRefactorTransformer} = require("./refactor-obfuscated-code-jscodeshift-4");
 
 const ast = j(
-`function first(_0x588017) { return 0; }
-function second(_0x588017) { return 0; }
-function third(_0x588017) { return 0; }
-function single(_0x305252) { return 0; }`
+`function first(_0x2461da) { return 0; }
+function second(_0x2461da) { return 0; }
+function third(_0x2461da) { return 0; }
+function single(_0x53d8ee) { return 0; }`
 );
 
 describe("ParameterRefactorTransformer", () => {
