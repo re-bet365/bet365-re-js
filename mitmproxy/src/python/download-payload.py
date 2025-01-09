@@ -13,10 +13,11 @@ class JavascriptExtractor:
     output_base_path = str((current_directory / "../../../../output").resolve()) + "/"
     javascript_base_path = str((current_directory / "../../javascript").resolve()) + "/"
     file_delimiter = b'\x03'b'\x06'b'\x05'
-    obfuscated_start_string = "(function(){ var _0x7c91="
+    obfuscated_start_string = "(function(){ var _0x123a="
     pre_transform_code_file_name = "pre-transform-code.js"
     post_transform_code_file_name = "post-transform-code.js"
     refactor_script_on_fly = True
+    output_all_files = True
     replace_contents: dict = {}
     node_executable_file: str
     function_names: list
@@ -48,6 +49,14 @@ class JavascriptExtractor:
                 content_bytes = received_file_content_bytes[1:]
                 content_start_string = content_bytes[:len(self.obfuscated_start_string)].decode()
                 is_obfuscated_content = content_start_string.startswith(self.obfuscated_start_string)
+
+                if self.output_all_files and not is_obfuscated_content:
+                    logging.info("Outputting response: " + flow.request.url)
+                    received_file_name = JavascriptExtractor.__get_file_name(self.output_base_path, received_file_content_bytes, file_identifier, "received", index)
+                    received_file = JavascriptExtractor.__create_file(received_file_name, "received")
+                    if received_file is not None:
+                        received_file.write(content_bytes)
+                        received_file.close()
 
                 if is_obfuscated_content:
                     logging.info("Intercepting response: " + flow.request.url)
