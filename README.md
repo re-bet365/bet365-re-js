@@ -53,14 +53,11 @@ node --version
 ```
 
 If not node is not installed then use nvm to install the version in `.nvmrc`
-Fish
-```fish
-nvm install (cat .nvmrc) && nvm use
+
 ```
-bash
-```zsh
 nvm install $(cat .nvmrc) && nvm use
 ```
+
 At the time of writing the latest LTS version of node is `v22.13.0`.
 
 ### Install node dependencies
@@ -84,7 +81,7 @@ Start the browser with the proxy setting pointing to `mitmproxy`.
 The `project-dir` must be absolute path to this project directory.
 For mac
 ```
-open -a "Google Chrome" --args --proxy-server=http://localhost:8080 --enable-logging --v=1 --user-data-dir=<project-dir>/output/tmp/chrome
+open -a "Google Chrome" --args --proxy-server=http://localhost:8080 --enable-logging --v=1 --user-data-dir=$(pwd)/output/tmp/chrome
 ```
 For linux
 ```
@@ -130,12 +127,10 @@ tail -f <user-data-dir>/chrome_debug.log | sed -En "s/.*inside.*\\]: (.*)\", sou
 ## Global state
 * `globalState[35]`: is the execution context of the tape. This may contain the `globalStateWriteIndex`, `globalStateReadIndex`, bits for manipulation, length of the array, etc... basically
 all sorts of things that point to the tape for the current execution context.
-* 
 
 ## Blocked
 ### Devtool
 When the devtool is open the `tapeKeywords[27269]: ""` is added. 
-
 
 ### Current and future work
 The current implementation only reverse engineers the JavaScript component but the control flow JavaScript is dictated by the `tape`.
@@ -147,5 +142,4 @@ Scraping data using websocket is much faster and efficient it should be the go-t
 *Future Work*
 * find out how the JavaScript detects devtool being open
 * find out how the JavaScript detects webdriver/playwright being open
-* reverse engineer the websocket so webdriver/playwright doesn't need to used for scraping data
-
+* reverse engineer the websocket so webdriver/playwright doesn't need to be used for scraping data
