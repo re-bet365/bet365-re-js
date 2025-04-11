@@ -14,7 +14,7 @@ class JavascriptExtractor:
     output_base_path = str((project_root_directory / "output").absolute()) + "/"
     javascript_base_path = str((project_root_directory / "mitmproxy/src/javascript").absolute()) + "/"
     file_delimiter = b'\x03'b'\x06'b'\x05'
-    obfuscated_start_string = "(function(){ var _0x123a="
+    obfuscated_start_string = "(function() { var _0x1b2f"
     pre_transform_code_file_name = "pre-transform-code.js"
     post_transform_code_file_name = "post-transform-code.js"
     refactor_script_on_fly = True
