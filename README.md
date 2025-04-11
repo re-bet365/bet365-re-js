@@ -34,7 +34,7 @@ To keep things accessible, no TypeScript is used - just pure JavaScript as the c
 Using miniforge to set up a fresh python environment is recommended but if you wish to use your current python environment that is also fine.
 With a fresh environment you are free to experiment with the dependencies and delete the environment if there are dependencies issues and won't affect the existing python environment.
 
-### Create a new python 3.11 env
+### Create a new python 3.12 env
 ```
 source new-conda-environment.sh
 ```
