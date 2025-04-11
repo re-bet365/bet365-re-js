@@ -1,3 +1,3 @@
-mitmproxy==11.0.1
-jsbeautifier==1.15.1
-rjsmin==1.2.3
+mitmproxy==11.1.3
+jsbeautifier==1.15.4
+rjsmin==1.2.4
