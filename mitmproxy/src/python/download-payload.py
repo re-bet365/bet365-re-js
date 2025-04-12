@@ -9,9 +9,10 @@ from rjsmin import jsmin
 
 
 class JavascriptExtractor:
-    current_directory = Path(__file__).resolve()
-    output_base_path = str((current_directory / "../../../../output").resolve()) + "/"
-    javascript_base_path = str((current_directory / "../../javascript").resolve()) + "/"
+    current_directory = Path(__file__).parent.absolute()
+    project_root_directory = current_directory.joinpath("../../..").absolute()
+    output_base_path = str((project_root_directory / "output").absolute()) + "/"
+    javascript_base_path = str((project_root_directory / "mitmproxy/src/javascript").absolute()) + "/"
     file_delimiter = b'\x03'b'\x06'b'\x05'
     obfuscated_start_string = "(function(){ var _0x123a="
     pre_transform_code_file_name = "pre-transform-code.js"
