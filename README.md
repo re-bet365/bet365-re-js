@@ -81,7 +81,7 @@ Start the browser with the proxy setting pointing to `mitmproxy`.
 The `project-dir` must be absolute path to this project directory.
 For mac
 ```
-open -a "Google Chrome" --args --proxy-server=http://localhost:8080 --enable-logging --v=1 --user-data-dir=$(pwd)/output/tmp/chrome
+open -a "Google Chrome" --args --proxy-server=http://localhost:8080 --enable-logging --v=1 --user-data-dir=$(pwd)/chrome-profile
 ```
 For linux
 ```
