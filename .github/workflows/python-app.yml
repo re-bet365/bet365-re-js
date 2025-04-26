@@ -17,22 +17,54 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [ 22.x ]
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.12"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f mitmproxy/requirements-ci.txt ]; then pip install -r mitmproxy/requirements-ci.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=200 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: "135.0.7049.114"
+          install-chromedriver: true
+      - name: Verify ChromeDriver
+        run: chromedriver --version
+      - name: Install libnss3-tools
+        run: sudo apt-get install -y libnss3-tools
+      - name: Install mitmproxy CA certificate
+        run: |
+          sudo cp mitmproxy/mitmproxy-ca-cert.pem /usr/local/share/ca-certificates/mitmproxy-ca-cert.crt && sudo update-ca-certificates
+          mkdir -p $HOME/.pki/nssdb && certutil -d sql:$HOME/.pki/nssdb -A -t "CT,C,C" -n "mitmproxy CA cert" -i mitmproxy/mitmproxy-ca-cert.pem
+      - name: Verify Installation
+        run: certutil -L -d sql:$HOME/.pki/nssdb
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f mitmproxy/requirements-ci.txt ]; then pip install -r mitmproxy/requirements-ci.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=200 --statistics
+      - name: Test with pytest
+        run: |
+          pytest
+      - name: get CA certs
+        run: |
+          echo "" | openssl s_client -connect google.com:443 -showcerts
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: output
+          path: |
+            output/*
