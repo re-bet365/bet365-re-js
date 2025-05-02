@@ -61,7 +61,7 @@ If you skipped the step of creating a new conda environment you can install the 
 
 ### node.js
 
-Make sure node is available 
+Make sure node is available
 
 ```
 node --version
@@ -160,13 +160,13 @@ tail -f <user-data-dir>/chrome_debug.log | sed -En "s/.*inside.*\\]: (.*)\", sou
 ## Global state
 
 * `globalState[35]`: is the execution context of the tape. This may contain the `globalStateWriteIndex`, `globalStateReadIndex`, bits for manipulation, length of the array, etc... basically
-all sorts of things that point to the tape for the current execution context.
+  all sorts of things that point to the tape for the current execution context.
 
 ## Blocked
 
 ### Devtool
 
-When the devtool is open the `tapeKeywords[27269]: ""` is added. 
+When the devtool is open the `tapeKeywords[27269]: ""` is added.
 
 ### Current and future work
 
