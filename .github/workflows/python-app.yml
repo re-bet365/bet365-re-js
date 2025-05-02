@@ -40,12 +40,12 @@ jobs:
         run: chromedriver --version
       - name: Install libnss3-tools
         run: sudo apt-get install -y libnss3-tools
-      - name: Install mitmproxy CA certificate
-        run: |
-          sudo cp mitmproxy/mitmproxy-ca-cert.pem /usr/local/share/ca-certificates/mitmproxy-ca-cert.crt && sudo update-ca-certificates
-          mkdir -p $HOME/.pki/nssdb && certutil -d sql:$HOME/.pki/nssdb -A -t "CT,C,C" -n "mitmproxy CA cert" -i mitmproxy/mitmproxy-ca-cert.pem
-      - name: Verify Installation
-        run: certutil -L -d sql:$HOME/.pki/nssdb
+#      - name: Install mitmproxy CA certificate
+#        run: |
+#          sudo cp mitmproxy/mitmproxy-ca-cert.pem /usr/local/share/ca-certificates/mitmproxy-ca-cert.crt && sudo update-ca-certificates
+#          mkdir -p $HOME/.pki/nssdb && certutil -d sql:$HOME/.pki/nssdb -A -t "CT,C,C" -n "mitmproxy CA cert" -i mitmproxy/mitmproxy-ca-cert.pem
+#      - name: Verify Installation
+#        run: certutil -L -d sql:$HOME/.pki/nssdb
       - name: Install python dependencies
         run: |
           python -m pip install --upgrade pip
