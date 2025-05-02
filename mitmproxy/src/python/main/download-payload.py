@@ -39,6 +39,9 @@ class JavascriptExtractor:
                 post_transform_file_contents = post_transform_file.read_text()
                 self.replace_contents[jsmin(transformed_file_contents)] = jsmin(post_transform_file_contents)
 
+    def request(self, flow: http.HTTPFlow):
+        flow.request.headers["User-Agent"] = self.__strip_headless(flow.request.headers["User-Agent"])
+
     def response(self, flow: http.HTTPFlow) -> None:
         if flowfilter.match(self.filter, flow):
             file_identifier = str(time.time())
@@ -124,6 +127,10 @@ class JavascriptExtractor:
         if file_name is not None:
             return open(file_name, "wb")
         return None
+
+    @staticmethod
+    def __strip_headless(user_agent: str):
+        return user_agent.replace("Headless", "")
 
 
 addons = [JavascriptExtractor()]
