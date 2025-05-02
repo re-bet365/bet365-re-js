@@ -1,5 +1,7 @@
 # Default ignored files
 /shelf/
-/workspace.xml
+workspace.xml
 sbt.xml
 scala_compiler.xml
+misc.xml
+modules.xml
