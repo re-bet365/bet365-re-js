@@ -128,6 +128,11 @@ For starting the browser, the recommendation is to create a new chrome profile j
 In the future, use of `obfuscated-code-logger.js` might add a lot of noise to console debugging log.
 `Clear Cache` extension is useful for clearing the cache from the toolbar or binding keyboard shortcut.
 
+## Obfuscated code rotation
+
+It seems like bet365 is rotating the obfuscated code.
+We manually keep a track of all the obfuscated code in `mitmproxy/src/python/tests/results`.
+
 ## Development
 
 For ease of develop you can put the obfuscated JavaScript in `mitmproxy/src/javascript/obfuscated-original.js` and compile `refactor-obfuscated-code-jscodeshift.js` each time there is change.
