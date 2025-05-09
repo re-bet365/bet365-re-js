@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 import time
 from selenium.webdriver.common.by import By
@@ -9,6 +10,9 @@ from .base_page import BasePage
 
 
 class CloudflareChallengePage(BasePage):
+    current_directory = Path(__file__).parent.absolute()
+    project_root_directory = (current_directory / "../../../../..").resolve()
+    output_directory = (project_root_directory / "output").absolute()
     """Page object for handling Cloudflare security challenges"""
 
     # Locators
@@ -39,6 +43,7 @@ class CloudflareChallengePage(BasePage):
     def switch_to_iframe(self):
         """Switch to the Cloudflare iframe if it exists"""
         print("waiting for cloudflare iframe")
+        self.save_screenshot_and_source(f"{self.output_directory}/bet365-before-iframe-switch-{datetime.now().timestamp()}")
         iframe = self.wait_for_element(self.TURNSTILE_IFRAME)
         if iframe:
             try:
