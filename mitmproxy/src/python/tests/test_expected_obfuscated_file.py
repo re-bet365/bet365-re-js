@@ -188,7 +188,7 @@ def test_headless_browser_with_proxy():
     while isinstance(page, CloudflareChallengePage):
         page = page.handle_challenge(output_directory)
 
-    wait_for_condition(get_obfuscated_files, lambda: save_timeout_screenshot_and_source(driver))
+    wait_for_condition(get_obfuscated_files, lambda: page.save_screenshot_and_source(f"{output_directory}/bet365-timeout-{datetime.now().timestamp()}"))
     latest_obfuscated_file_path = get_obfuscated_files()[-1]
     latest_obfuscated_contents = read_file_contents(latest_obfuscated_file_path)
     expected_obfuscated_contents = read_file_contents(javascript_directory / "obfuscated-new-raw.js")
@@ -196,13 +196,6 @@ def test_headless_browser_with_proxy():
     assert latest_obfuscated_contents == expected_obfuscated_contents
 
     driver.quit()
-
-
-def save_timeout_screenshot_and_source(driver):
-    timestamp = datetime.now().timestamp()
-    driver.save_screenshot(f"{output_directory}/bet365-timeout-{timestamp}.png")
-    with open(f"{output_directory}/bet365-timeout-{timestamp}.html", "w", encoding="utf-8") as file:
-        file.write(driver.page_source)
 
 
 def read_file_contents(file_path):

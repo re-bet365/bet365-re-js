@@ -103,3 +103,14 @@ class BasePage:
         if self.is_element_present(cookie_accept_locator):
             self.safe_click(cookie_accept_locator)
             time.sleep(1)  # Allow time for cookie banner to disappear
+
+    def save_page_source(self, file_name):
+        with open(file_name, "w", encoding="utf-8") as file:
+            file.write(self.driver.page_source)
+
+    def save_screenshot(self, file_name):
+        self.driver.save_screenshot(file_name)
+
+    def save_screenshot_and_source(self, file_name):
+        self.save_screenshot(file_name + ".png")
+        self.save_page_source(file_name + ".html")
