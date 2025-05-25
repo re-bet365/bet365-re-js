@@ -1,7 +1,7 @@
+import time
 from datetime import datetime
 from pathlib import Path
 
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
@@ -43,7 +43,8 @@ class CloudflareChallengePage(BasePage):
     def switch_to_iframe(self):
         """Switch to the Cloudflare iframe if it exists"""
         print("waiting for cloudflare iframe")
-        self.save_screenshot_and_source(f"{self.output_directory}/bet365-before-iframe-switch-{datetime.now().timestamp()}")
+        timestamp = datetime.now().timestamp()
+        self.save_screenshot_and_source(f"{self.output_directory}/{timestamp}-bet365-before-iframe-switch")
         iframe = self.wait_for_element(self.TURNSTILE_IFRAME)
         if iframe:
             try:
@@ -92,14 +93,14 @@ class CloudflareChallengePage(BasePage):
             # self.wait_for_page_load()
             print("follow_link: " + self.follow_link)
             timestamp = datetime.now().timestamp()
-            self.driver.save_screenshot(f"{output_directory}/bet365-challenge-{timestamp}.png")
+            self.driver.save_screenshot(f"{output_directory}/{timestamp}-bet365-challenge.png")
 
         # Wait for the spinner to disappear first
         WebDriverWait(self.driver, 30).until_not(
             ec.presence_of_element_located((By.CSS_SELECTOR, "div[class*='spinner']"))
         )
         timestamp = datetime.now().timestamp()
-        self.driver.save_screenshot(f"{output_directory}/bet365-challenge-spinner-gone-{timestamp}.png")
+        self.driver.save_screenshot(f"{output_directory}/{timestamp}-bet365-challenge-spinner-gone.png")
 
         # Try checkbox challenge first
         if self.solve_checkbox_challenge():
@@ -107,13 +108,15 @@ class CloudflareChallengePage(BasePage):
             if self.wait_for_challenge_completion(5) and not self.is_cloudflare_page():
                 return self.redirect_page
 
-        self.driver.save_screenshot(f"{output_directory}/bet365-after-checkbox-{timestamp}.png")
+        timestamp = datetime.now().timestamp()
+        self.driver.save_screenshot(f"{output_directory}/{timestamp}-bet365-after-checkbox.png")
 
         # If still on challenge page, wait longer for it to resolve
         print("Waiting for challenge to complete...")
         if self.wait_for_challenge_completion(20) and not self.is_cloudflare_page():
             return self.redirect_page
 
-        self.driver.save_screenshot(f"{output_directory}/bet365-challenge-end-{timestamp}.png")
+        timestamp = datetime.now().timestamp()
+        self.driver.save_screenshot(f"{output_directory}/{timestamp}-bet365-challenge-end.png")
 
         return self

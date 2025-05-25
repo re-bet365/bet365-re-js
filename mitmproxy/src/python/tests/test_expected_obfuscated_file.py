@@ -183,12 +183,13 @@ def test_headless_browser_with_proxy():
     page = Bet365HomePage(driver)
     page = page.navigate()
     timestamp = datetime.now().timestamp()
-    driver.save_screenshot(f"{output_directory}/bet365-{timestamp}.png")
+    driver.save_screenshot(f"{output_directory}/{timestamp}-bet365.png")
 
     while isinstance(page, CloudflareChallengePage):
         page = page.handle_challenge(output_directory)
 
-    wait_for_condition(get_obfuscated_files, lambda: page.save_screenshot_and_source(f"{output_directory}/bet365-timeout-{datetime.now().timestamp()}"))
+    timestamp = datetime.now().timestamp()
+    wait_for_condition(get_obfuscated_files, lambda: page.save_screenshot_and_source(f"{output_directory}/{timestamp}-bet365-timeout"))
     latest_obfuscated_file_path = get_obfuscated_files()[-1]
     latest_obfuscated_contents = read_file_contents(latest_obfuscated_file_path)
     expected_obfuscated_contents = read_file_contents(javascript_directory / "obfuscated-new-raw.js")
