@@ -109,7 +109,7 @@ class CloudflareChallengePage(BasePage):
                 return self.redirect_page
 
         timestamp = datetime.now().timestamp()
-        self.driver.save_screenshot(f"{output_directory}/{timestamp}-bet365-after-checkbox.png")
+        self.driver.save_screenshot(f"{output_directory}/{timestamp}-bet365-after-solve-challenge.png")
 
         # If still on challenge page, wait longer for it to resolve
         print("Waiting for challenge to complete...")

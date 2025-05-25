@@ -1,4 +1,5 @@
 import time
+
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as ec
