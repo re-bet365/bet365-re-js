@@ -1,11 +1,7 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-
-const esprima = require("esprima");
-const fs = require('node:fs');
-const path = require('path');
-const j = require('jscodeshift');
-const { v4: uuidv4 } = require('uuid');
-const {RemovedUnusedParametersTransformer} = require("./refactor-obfuscated-code-jscodeshift-8");
+import j from 'jscodeshift';
+import {v4 as uuidv4} from 'uuid';
+import {RemovedUnusedParametersTransformer} from "./refactor-obfuscated-code-jscodeshift-8";
 
 const ast = j(`
 function aFunction(unused) {

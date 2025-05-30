@@ -1,18 +1,12 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
+import j from 'jscodeshift';
+import {v4 as uuidv4} from 'uuid';
+import {ParameterRefactorTransformer} from "./refactor-obfuscated-code-jscodeshift-4";
 
-const esprima = require("esprima");
-const fs = require('node:fs');
-const path = require('path');
-const j = require('jscodeshift');
-const { v4: uuidv4 } = require('uuid');
-const {ParameterRefactorTransformer} = require("./refactor-obfuscated-code-jscodeshift-4");
-
-const ast = j(
-`function first(_0x2461da) { return 0; }
+const ast = j(`function first(_0x2461da) { return 0; }
 function second(_0x2461da) { return 0; }
 function third(_0x2461da) { return 0; }
-function single(_0x53d8ee) { return 0; }`
-);
+function single(_0x53d8ee) { return 0; }`);
 
 describe("ParameterRefactorTransformer", () => {
     test("transform", () => {
@@ -20,8 +14,7 @@ describe("ParameterRefactorTransformer", () => {
         transformer.transform();
 
         // Assert the file content
-        const expectedContents =
-`function first(keywordArray) {
+        const expectedContents = `function first(keywordArray) {
     return 0;
 }
 function second(keywordArray) {

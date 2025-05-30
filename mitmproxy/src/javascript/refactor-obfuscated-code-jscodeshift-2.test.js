@@ -1,11 +1,7 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-
-const esprima = require("esprima");
-const fs = require('node:fs');
-const path = require('path');
-const j = require('jscodeshift');
-const { v4: uuidv4 } = require('uuid');
-const {RefactorVariableTransformer} = require("./refactor-obfuscated-code-jscodeshift-2");
+import j from 'jscodeshift';
+import {v4 as uuidv4} from 'uuid';
+import {RefactorVariableTransformer} from "./refactor-obfuscated-code-jscodeshift-2";
 
 const ast = j("var _0x1e16 = [];");
 

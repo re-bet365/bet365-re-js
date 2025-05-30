@@ -1,6 +1,6 @@
-const glob = require('glob');
-const fs = require('node:fs');
-const path = require('path');
+import {glob} from 'glob';
+import fs from 'node:fs';
+import path from 'path';
 
 export function verifyFileExists(outputBaseName, stepNumber, contents) {
     const filePath = path.join(__dirname, `${outputBaseName}-${stepNumber}.js`);
@@ -21,5 +21,5 @@ export function verifyFileExists(outputBaseName, stepNumber, contents) {
 }
 
 export function getOutputFiles(outputBaseName) {
-    return glob.sync(`**/${outputBaseName}-*.js`, { cwd: __dirname});
+    return glob.sync(`**/${outputBaseName}-*.js`, {cwd: __dirname});
 }

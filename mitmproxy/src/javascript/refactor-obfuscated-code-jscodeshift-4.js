@@ -1,11 +1,10 @@
-const {AstTransformer} = require("./refactor-obfuscated-code-jscodeshift-common");
-const j = require('jscodeshift');
+import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
+import j from 'jscodeshift';
 
 var refactorParameters = {
     // the length of the array is the length of the expected scope
     '_0x2461da': ['keywordArray', 'keywordArray', 'index'],
     '_0x1e165c': ['shiftCount', 'unused'],
-    '_0x38dc1b': ['shiftBy'],
     '_0x53d8ee': 'moduleKey',
     '_0x38dc1b': 'moduleArray',
     '_0x2418ef': 'exportedModules',

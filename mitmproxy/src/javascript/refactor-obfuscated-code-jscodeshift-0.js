@@ -1,5 +1,5 @@
-const {AstTransformer} = require("./refactor-obfuscated-code-jscodeshift-common");
-const j = require('jscodeshift');
+import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
+import j from 'jscodeshift';
 
 class Void0Transformer extends AstTransformer {
     constructor(stepNumber, jscodeshiftAst, output, outputBaseName) {
@@ -8,7 +8,7 @@ class Void0Transformer extends AstTransformer {
 
     performTransform() {
         this.jscodeshiftAst.find(j.UnaryExpression, {operator: 'void', argument: {value: 0}})
-                .replaceWith(path => j.identifier('undefined'));
+            .replaceWith(path => j.identifier('undefined'));
     }
 }
 
