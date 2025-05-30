@@ -52,4 +52,22 @@ class AstTransformer {
     }
 }
 
-module.exports = {AstTransformer};
+class ChainedTransformer extends AstTransformer {
+    chainedTransformers;
+
+    constructor(jscodeshiftAst, output, outputBaseName, chainedTransformers) {
+        super("end", jscodeshiftAst, output, outputBaseName);
+        this.chainedTransformers = chainedTransformers;
+    }
+
+    performTransform() {
+        let ast = this.jscodeshiftAst;
+        debugger;
+        this.chainedTransformers.forEach(transformer => {
+            ast = transformer.transform();
+        })
+        return ast;
+    }
+}
+
+module.exports = {AstTransformer, ChainedTransformer};
