@@ -1,10 +1,10 @@
-const escodegen = require('escodegen');
-const esprima = require('esprima');
-const fs = require('node:fs');
+import escodegen from "escodegen";
+import * as esprima from "esprima";
+import fs from "node:fs";
 
 class AstTransformer {
     constructor(stepNumber, jscodeshiftAst, output, outputBaseName) {
-        if (this.constructor == AstTransformer) {
+        if (this.constructor === AstTransformer) {
             throw new Error("not instantiable");
         }
         this.stepNumber = stepNumber;

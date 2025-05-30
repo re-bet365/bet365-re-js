@@ -1,11 +1,7 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-
-const esprima = require("esprima");
-const {AstTransformer} = require("./refactor-obfuscated-code-jscodeshift-common");
-const j = require('jscodeshift');
-const fs = require('node:fs');
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
+import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
+import j from 'jscodeshift';
+import {v4 as uuidv4} from 'uuid';
 
 const jscodeshiftAst = j("");
 

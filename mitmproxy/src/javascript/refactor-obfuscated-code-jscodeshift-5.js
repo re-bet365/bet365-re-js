@@ -1,5 +1,5 @@
-const {AstTransformer} = require("./refactor-obfuscated-code-jscodeshift-common");
-const j = require('jscodeshift');
+import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
+import j from 'jscodeshift';
 
 var refactorFunctions = {
     '_0x21f1e2': 'getModule',

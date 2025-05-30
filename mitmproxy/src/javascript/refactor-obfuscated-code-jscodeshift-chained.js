@@ -1,20 +1,15 @@
-const fs = require('node:fs');
-const { argv } = require('node:process');
-const j = require('jscodeshift');
-const escodegen = require('escodegen');
-const esprima = require('esprima');
-const {AstTransformer} = require("./refactor-obfuscated-code-jscodeshift-common");
-const {Void0Transformer} = require("./refactor-obfuscated-code-jscodeshift-0");
-const {UnaryExpressionTransformer} = require("./refactor-obfuscated-code-jscodeshift-1");
-const {RefactorVariableTransformer} = require("./refactor-obfuscated-code-jscodeshift-2");
-const {VariableReplacementTransformer} = require("./refactor-obfuscated-code-jscodeshift-3");
-const {ParameterRefactorTransformer} = require("./refactor-obfuscated-code-jscodeshift-4");
-const {FunctionRefactorTransformer} = require("./refactor-obfuscated-code-jscodeshift-5");
-const {RemoveKeywordsTransformer} = require("./refactor-obfuscated-code-jscodeshift-6");
-const {BracketToDotNotationTransformer} = require("./refactor-obfuscated-code-jscodeshift-7");
-const {RemovedUnusedParametersTransformer} = require("./refactor-obfuscated-code-jscodeshift-8");
-const {RemovedClosestTransformer} = require("./refactor-obfuscated-code-jscodeshift-9");
-const {RemoveStaleIdentifierTransformer} = require("./refactor-obfuscated-code-jscodeshift-10");
+import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
+import {Void0Transformer} from "./refactor-obfuscated-code-jscodeshift-0";
+import {UnaryExpressionTransformer} from "./refactor-obfuscated-code-jscodeshift-1";
+import {RefactorVariableTransformer} from "./refactor-obfuscated-code-jscodeshift-2";
+import {VariableReplacementTransformer} from "./refactor-obfuscated-code-jscodeshift-3";
+import {ParameterRefactorTransformer} from "./refactor-obfuscated-code-jscodeshift-4";
+import {FunctionRefactorTransformer} from "./refactor-obfuscated-code-jscodeshift-5";
+import {RemoveKeywordsTransformer} from "./refactor-obfuscated-code-jscodeshift-6";
+import {BracketToDotNotationTransformer} from "./refactor-obfuscated-code-jscodeshift-7";
+import {RemovedUnusedParametersTransformer} from "./refactor-obfuscated-code-jscodeshift-8";
+import {RemovedClosestTransformer} from "./refactor-obfuscated-code-jscodeshift-9";
+import {RemoveStaleIdentifierTransformer} from "./refactor-obfuscated-code-jscodeshift-10";
 
 class ChainedTransformer extends AstTransformer {
     constructor(jscodeshiftAst, output, outputBaseName) {

@@ -1,11 +1,7 @@
-import {verifyFileExists, getOutputFiles} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-
-const esprima = require("esprima");
-const j = require('jscodeshift');
-const fs = require('node:fs');
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
-const {ChainedTransformer} = require("./refactor-obfuscated-code-jscodeshift-chained");
+import {getOutputFiles, verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
+import j from 'jscodeshift';
+import {v4 as uuidv4} from 'uuid';
+import {ChainedTransformer} from "./refactor-obfuscated-code-jscodeshift-chained";
 
 const jscodeshiftAst = j("");
 

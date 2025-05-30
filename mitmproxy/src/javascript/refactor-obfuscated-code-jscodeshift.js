@@ -1,9 +1,4 @@
-const fs = require('node:fs');
-const { argv } = require('node:process');
-const j = require('jscodeshift');
-const escodegen = require('escodegen');
-const esprima = require('esprima');
-const {ChainedTransformer} = require("./refactor-obfuscated-code-jscodeshift-chained");
+import fs from 'node:fs';
 
 if (typeof __dirname === 'undefined' || !__dirname) {
     __dirname = '.';
