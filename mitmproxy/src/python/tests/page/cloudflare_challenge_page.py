@@ -64,10 +64,10 @@ class CloudflareChallengePage(BasePage):
         """Solve the simple checkbox challenge"""
         if self.switch_to_iframe():
             turnstile_checkbox_present = self.is_element_present(self.TURNSTILE_CHECKBOX)
-            print("turnstile checkbox present: " + turnstile_checkbox_present)
+            print("turnstile checkbox present: " + str(turnstile_checkbox_present))
             if turnstile_checkbox_present:
                 success = self.safe_click(self.TURNSTILE_CHECKBOX)
-                print("turnstile checkbox click success: " + success)
+                print("turnstile checkbox click success: " + str(success))
                 self.switch_to_default_content()
                 return success
             self.switch_to_default_content()
