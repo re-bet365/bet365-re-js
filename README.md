@@ -131,7 +131,7 @@ In the future, use of `obfuscated-code-logger.js` might add a lot of noise to co
 ## Obfuscated code rotation
 
 It seems like bet365 is rotating the obfuscated code.
-We manually keep a track of all the obfuscated code in `mitmproxy/src/python/tests/results`.
+We manually keep a track of all the obfuscated code in `mitmproxy/src/javascript/obfuscated`.
 
 Some of the browser points that affect which version of obfuscated code are:
 
@@ -140,7 +140,7 @@ Some of the browser points that affect which version of obfuscated code are:
 
 ## Development
 
-For ease of develop you can put the obfuscated JavaScript in `mitmproxy/src/javascript/obfuscated-original.js` and compile `refactor-obfuscated-code-jscodeshift.js` each time there is change.
+For ease of development you can put the obfuscated JavaScript in `mitmproxy/src/javascript/obfuscated-original.js` and compile `refactor-obfuscated-code-jscodeshift.js` each time there is change.
 
 ```
 watchexec -e js "touch mitmproxy/src/python/download-payload.py && \
