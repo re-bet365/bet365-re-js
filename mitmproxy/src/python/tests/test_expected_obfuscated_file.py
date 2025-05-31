@@ -201,8 +201,7 @@ def test_headless_browser_with_proxy():
 
 def read_file_contents(file_path):
     with file_path.open("r", encoding="utf-8") as file:
-        file_content = file.read()
-    return file_content
+        return file.read().strip()
 
 
 def get_obfuscated_files():
