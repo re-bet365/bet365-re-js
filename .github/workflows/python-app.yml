@@ -54,6 +54,21 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
+      - name: Commit new obfuscated files
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python mitmproxy/src/python/save_obfuscated_code.py
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"
+          git checkout -b obfuscated-files || true
+          git add .
+          git commit -am "Obfuscated files" || echo "No changes to commit"
+          git push -u origin obfuscated-files --force || echo "Failed to push changes"
+          gh pr create --title "Obfuscated files" --body "Update obfuscated files" --base main --head obfuscated-files --merge || echo "Failed to create PR"
+          gh pr merge --squash --delete-branch "obfuscated-files" || echo "Failed to enable auto-merge"
+
       - name: Archive output artifacts
         if: always()
         uses: actions/upload-artifact@v4
