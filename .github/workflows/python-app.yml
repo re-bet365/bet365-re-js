@@ -40,9 +40,11 @@ jobs:
           chrome-version: "137.0.7151.119"
           install-chromedriver: true
       - name: Install python dependencies
+        env:
+          PIP_REQUIREMENTS: mitmproxy/src/python/requirements-ci.txt
         run: |
           python -m pip install --upgrade pip
-          if [ -f mitmproxy/src/python/requirements-ci.txt ]; then pip install -r mitmproxy/src/python/requirements-ci.txt; fi
+          if [ -f $PIP_REQUIREMENTS ]; then pip install -r $PIP_REQUIREMENTS; fi
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names

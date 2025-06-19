@@ -1,0 +1,25 @@
+[project]
+name = "mitmproxy-javascript-extractor"
+version = "0.1.0"
+description = "A mitmproxy addon for extracting and transforming JavaScript payloads."
+readme = "README.md"
+requires-python = "==3.12"
+dependencies = [
+    "mitmproxy==11.1.3",
+    "jsbeautifier",
+    "rjsmin"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black"
+]
+
+
+[tool.setuptools]
+package-dir = { "" = "src/python" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src/python"]
