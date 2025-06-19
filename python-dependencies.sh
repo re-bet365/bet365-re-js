@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-pip install -r mitmproxy/requirements-test.txt
+pip install -r mitmproxy/src/python/requirements-test.txt
