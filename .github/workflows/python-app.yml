@@ -41,7 +41,7 @@ jobs:
           install-chromedriver: true
       - name: Install python dependencies
         env:
-          PIP_REQUIREMENTS: mitmproxy/src/python/requirements-ci.txt
+          PIP_REQUIREMENTS: mitmproxy/src/python/requirements-ci.lock.txt
         run: |
           python -m pip install --upgrade pip
           if [ -f $PIP_REQUIREMENTS ]; then pip install -r $PIP_REQUIREMENTS; fi
@@ -51,9 +51,22 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=200 --statistics
+      - name: Get installed playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(grep playwright mitmproxy/src/python/requirements-test.lock.txt)" >> $GITHUB_ENV
+      - name: Cache playwright binaries
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install playwright dependencies
+        run: |
+          playwright install --with-deps
       - name: Test with pytest
         run: |
-          pytest
+          pytest --tracing=retain-on-failure
       - name: Commit new obfuscated files
         if: failure()
         env:

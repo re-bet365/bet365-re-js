@@ -1,7 +1,8 @@
-node_modules
-coverage
 .vscode
 chrome-profile
-*.iml
+coverage
+node_modules
 out
+test-results
+*.iml
 *.swp
