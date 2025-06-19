@@ -3,3 +3,5 @@ coverage
 .vscode
 chrome-profile
 *.iml
+out
+*.swp

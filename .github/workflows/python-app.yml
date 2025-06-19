@@ -36,7 +36,7 @@ jobs:
           python-version: "3.12"
       - uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: "136.0.7103.113"
+          chrome-version: "137.0.7151.103"
           install-chromedriver: true
       - name: Install python dependencies
         run: |
