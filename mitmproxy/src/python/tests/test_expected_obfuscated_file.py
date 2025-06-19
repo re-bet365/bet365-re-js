@@ -1,14 +1,10 @@
 import subprocess
+import time
 from datetime import datetime
 from pathlib import Path
 
 import pytest
-import time
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
-from page.bet_365_home_page import Bet365HomePage
-from page.cloudflare_challenge_page import CloudflareChallengePage
+from playwright.sync_api import sync_playwright, ProxySettings, ViewportSize, Error
 
 current_directory = Path(__file__).parent.absolute()
 project_root_directory = (current_directory / "../../../..").resolve()
@@ -18,7 +14,7 @@ output_directory = (project_root_directory / "output").absolute()
 
 
 def start_mitmproxy():
-    # Start mitmproxy in transparent mode
+    # Start mitmproxy in transparent modes
     process = subprocess.Popen(["mitmdump", "-s", f"{script_directory}/download-payload.py"])
     return process
 
@@ -31,101 +27,28 @@ def setup_and_teardown():
     mitmproxy_process.terminate()
 
 
-def get_stealth_chrome_options():
-    # Configure headless browser with mitmproxy as proxy
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--ignore-certificate-errors")
-    chrome_options.add_argument("--proxy-server=http://localhost:8080")
+def configure_stealth_context(context):
+    # Configure various evasions
+    context.set_extra_http_headers({
+        "Accept-Language": "en-US,en;q=0.9",
+    })
 
-    # Window size and appearance
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.add_argument("--start-maximized")
-    # # Essential anti-detection options
-    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option("useAutomationExtension", False)
-    # Browser fingerprinting protection
-    chrome_options.add_argument("--disable-web-security")
-    chrome_options.add_argument("--allow-running-insecure-content")
-    chrome_options.add_argument("--disable-client-side-phishing-detection")
-    chrome_options.add_argument("--disable-notifications")
-    chrome_options.add_argument("--disable-popup-blocking")
-    # Privacy and tracking protection
-    chrome_options.add_argument("--disable-features=IsolateOrigins,site-per-process")
-    chrome_options.add_argument("--disable-site-isolation-trials")
-    chrome_options.add_argument("--disable-features=EnableEphemeralFlashPermission")
-    chrome_options.add_argument("--disable-features=CookiesWithoutSameSiteMustBeSecure")
-    # Additional anti-fingerprinting measures
-    chrome_options.add_argument("--disable-features=TranslateUI")
-    chrome_options.add_argument("--disable-features=BlinkGenPropertyTrees")
-    chrome_options.add_argument("--disable-plugins-discovery")
-    chrome_options.add_argument("--disable-hang-monitor")
-    chrome_options.add_argument("--disable-domain-reliability")
-    # WebRTC settings (prevent IP leaks)
-    chrome_options.add_argument("--disable-webrtc-encryption")
-    chrome_options.add_argument("--disable-webrtc-hw-decoding")
-    chrome_options.add_argument("--disable-webrtc-hw-encoding")
-    chrome_options.add_argument("--disable-webrtc-multiple-routes")
-    # Extra stealth tweaks
-    chrome_options.add_argument('--disable-features=InterestCohort')  # Disable FLoC
-    chrome_options.add_argument("--enable-features=NetworkService,NetworkServiceInProcess")
-    chrome_options.add_argument("--lang=en-US,en;q=0.9")
-    chrome_options.add_argument("--disable-extensions")
-    # Override JS properties that are commonly used to detect automation
-    chrome_options.add_argument("--disable-infobars")
-    # Audio and video settings
-    chrome_options.add_argument("--autoplay-policy=user-gesture-required")
-    chrome_options.add_argument("--mute-audio")
-    # Platform-specific
-    chrome_options.add_argument("--disable-3d-apis")
-    chrome_options.add_argument("--disable-background-networking")
-    # Add preferences to further mask automation
-    prefs = {
-        "credentials_enable_service": False,
-        "profile.password_manager_enabled": False,
-        "profile.default_content_setting_values.notifications": 2,
-        "profile.managed_default_content_settings.images": 1,
-        "profile.default_content_setting_values.cookies": 1,
-        "profile.default_content_setting_values.plugins": 1,
-        "profile.default_content_setting_values.popups": 2,
-        "profile.default_content_setting_values.geolocation": 2,
-        "profile.default_content_setting_values.auto_select_certificate": 2,
-        "profile.default_content_setting_values.mixed_script": 1,
-        "profile.default_content_setting_values.media_stream": 2,
-        "profile.default_content_setting_values.media_stream_mic": 2,
-        "profile.default_content_setting_values.media_stream_camera": 2,
-        "profile.default_content_setting_values.protocol_handlers": 2,
-        "profile.default_content_setting_values.midi_sysex": 2,
-        "profile.default_content_setting_values.push_messaging": 2,
-        "profile.default_content_setting_values.ssl_cert_decisions": 2,
-        "profile.default_content_setting_values.metro_switch_to_desktop": 2,
-        "profile.default_content_setting_values.protected_media_identifier": 2,
-        "profile.default_content_setting_values.site_engagement": 2,
-        "profile.default_content_setting_values.durable_storage": 2,
-        "useAutomationExtension": False,
-        "excludeSwitches": ["enable-automation"],
-        "plugins.always_open_pdf_externally": True
-    }
-    chrome_options.add_experimental_option("prefs", prefs)
-
-    return chrome_options
-
-
-def get_stealth_chrome_driver():
-    driver = webdriver.Chrome(options=get_stealth_chrome_options())
-    driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-        "source": """
+    # Add scripts to evaluate on new document
+    context.add_init_script("""
     Object.defineProperty(navigator, 'webdriver', {
         get: () => undefined
-    });
-    // Overwrite the 'plugins' property to use a custom getter
+    });    
+    window.chrome = {
+        runtime: {},
+        loadTimes: function() {},
+        csi: function() {},
+        app: {},
+        webstore: {}
+    };
     Object.defineProperty(navigator, 'plugins', {
         get: () => {
-            // Create a fake plugins array with a length property
             const plugins = {length: 5};
-            // Define some fake plugin items
-            for (let i = 0; i < plugins.length; i++) {
+            for (let i = 0; i < plugins.length; i < plugins.length; i++) {
                 plugins[i] = {
                     name: `Plugin ${i+1}`,
                     description: `Fake plugin ${i+1} for anti-detection`,
@@ -136,84 +59,141 @@ def get_stealth_chrome_driver():
             return plugins;
         }
     });
-    // Overwrite some chrome properties
-    window.chrome = {
-        runtime: {},
-        loadTimes: function() {},
-        csi: function() {},
-        app: {},
-        webstore: {}
-    };
-    // Overwrite other navigator properties
-    Object.defineProperty(navigator, 'languages', {
-        get: () => ['en-US', 'en']
-    });
-    // Override permissions API
-    const originalQuery = window.navigator.permissions.query;
-    window.navigator.permissions.query = (parameters) => (
-        parameters.name === 'notifications' ?
-        Promise.resolve({state: Notification.permission}) :
-        originalQuery(parameters)
-    );
-    // Prevent iframe focus detection technique
-    const originalFunction = HTMLIFrameElement.prototype.contentWindow;
-    Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-        get() {
-            const frame = originalFunction.call(this);
-            try {
-                if (this.src.indexOf('about:blank') !== -1) {
-                    Object.defineProperty(frame, 'parent', {
-                        get: () => null
-                    });
-                }
-                return frame;
-            } catch (e) {
-                return frame;
-            }
-        }
-    });
-    """
-    })
-    return driver
+    """)
+    return context
 
 
-def test_headless_browser_with_proxy():
-    driver = get_stealth_chrome_driver()
+def handle_cloudflare_challenge(page):
+    while True:
+        # Check if we're on a Cloudflare challenge page
+        if page.locator("#challenge-running, #challenge-stage, iframe[src*='challenges.cloudflare.com']").count() == 0:
+            break
 
-    page = Bet365HomePage(driver)
-    page = page.navigate()
+        timestamp = datetime.now().timestamp()
+        page.screenshot(path=f"{output_directory}/{timestamp}-bet365-challenge.png")
+
+        # Wait for spinner to disappear
+        page.wait_for_selector("div[class*='spinner']", state="hidden", timeout=30000)
+
+        # Handle Cloudflare iframe if present
+        iframe_locator = page.frame_locator("iframe[src*='challenges.cloudflare.com']")
+        if iframe_locator.count() > 0:
+            checkbox = iframe_locator.locator("input[type='checkbox'],div.ctp-checkbox-label")
+            if checkbox.is_visible():
+                checkbox.click()
+
+        # Wait for potential redirect after challenge
+        page.wait_for_load_state("networkidle")
+        timestamp = datetime.now().timestamp()
+        page.screenshot(path=f"{output_directory}/{timestamp}-bet365-after-challenge.png")
+
+        # Check if we're still on challenge page after short wait
+        page.wait_for_timeout(5000)
+        if page.locator("#challenge-running, #challenge-stage, iframe[src*='challenges.cloudflare.com']").count() == 0:
+            break
+
+
+@pytest.fixture(scope="session")
+def playwright():
+    with sync_playwright() as p:
+        yield p
+
+
+@pytest.fixture(scope="session")
+def browser_context_session(playwright):
+    browser = playwright.chromium.launch(
+        headless=True,
+        proxy=ProxySettings(
+            server="localhost:8080"
+        )
+    )
+
+    context = browser.new_context(
+        viewport=ViewportSize(width=1920, height=1080),
+        ignore_https_errors=True
+    )
+
+    configure_stealth_context(context)
+
+    yield context
+    browser.close()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_tracing(browser_context_session):
+    results_dir = Path("test-results")
+    results_dir.mkdir(exist_ok=True)
+
+    browser_context_session.tracing.start(
+        screenshots=True,
+        snapshots=True,
+        sources=True
+    )
+
+    yield
+
+    browser_context_session.tracing.stop(path=results_dir / "trace.zip")
+
+
+@pytest.fixture
+def page(browser_context_session):
+    page = browser_context_session.new_page()
+    yield page
+
+
+def retry_goto(page, url, max_retries=20, delay=0.5):
+    last_error = None
+    retryable_errors = [
+        "ERR_PROXY_CONNECTION_FAILED",
+        "ERR_CONNECTION_RESET"
+    ]
+
+    for _ in range(max_retries):
+        try:
+            return page.goto(url, timeout=30000)  # 30 second timeout for each attempt
+        except Error as e:
+            error_str = str(e)
+            if any(err in error_str for err in retryable_errors):
+                last_error = e
+                time.sleep(delay)
+                continue
+            raise
+    raise last_error
+
+
+def test_headless_browser_with_proxy(page):
+    # Navigate to Bet365 with retries
+    retry_goto(page, "https://www.bet365.com")
+    # Rest of your test code...
     timestamp = datetime.now().timestamp()
-    driver.save_screenshot(f"{output_directory}/{timestamp}-bet365.png")
+    page.screenshot(path=f"{output_directory}/{timestamp}-bet365.png")
 
-    while isinstance(page, CloudflareChallengePage):
-        page = page.handle_challenge(output_directory)
+    # Handle Cloudflare challenge
+    handle_cloudflare_challenge(page)
+
+    # Wait for and verify obfuscated file
+
+    def get_obfuscated_files():
+        return [file for file in output_directory.glob("*.js")
+                if file.open("r", encoding="utf-8").read(20).strip().startswith("(function()")]
+
+    def wait_for_condition(condition_func, timeout=60, interval=0.5):
+        start = time.time()
+        while time.time() - start < timeout:
+            if condition_func():
+                return True
+            time.sleep(interval)
+        raise TimeoutError("Condition not met within timeout")
 
     timestamp = datetime.now().timestamp()
-    wait_for_condition(get_obfuscated_files, lambda: page.save_screenshot_and_source(f"{output_directory}/{timestamp}-bet365-timeout"))
+    try:
+        wait_for_condition(get_obfuscated_files)
+    except TimeoutError:
+        page.screenshot(path=f"{output_directory}/{timestamp}-bet365-timeout.png")
+        raise
+
     latest_obfuscated_file_path = get_obfuscated_files()[-1]
-    latest_obfuscated_contents = read_file_contents(latest_obfuscated_file_path)
-    expected_obfuscated_contents = read_file_contents(javascript_directory / "obfuscated-new-raw.js")
+    latest_obfuscated_contents = latest_obfuscated_file_path.read_text(encoding="utf-8").strip()
+    expected_obfuscated_contents = (javascript_directory / "obfuscated-new-raw.js").read_text(encoding="utf-8").strip()
 
     assert latest_obfuscated_contents == expected_obfuscated_contents
-
-    driver.quit()
-
-
-def read_file_contents(file_path):
-    with file_path.open("r", encoding="utf-8") as file:
-        return file.read().strip()
-
-
-def get_obfuscated_files():
-    return [file for file in output_directory.glob("*.js") if file.open("r", encoding="utf-8").read(20).strip().startswith("(function()")]
-
-
-def wait_for_condition(condition_function, timeout_function=None, timeout_seconds=60, interval_seconds=0.5):
-    start = time.time()
-    while time.time() - start < timeout_seconds:
-        if condition_function():
-            return True
-        time.sleep(interval_seconds)
-    if timeout_function:
-        timeout_function()
-    raise TimeoutError("Timeout error")
