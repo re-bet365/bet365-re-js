@@ -76,14 +76,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python mitmproxy/src/python/save_obfuscated_code.py
-          git config --local user.name "github-actions"
-          git config --local user.email "github-actions@github.com"
-          git switch -c obfuscated-files || true
-          git add .
-          git commit -m "Obfuscated files" || echo "No changes to commit"
-          git push -u origin obfuscated-files --force || echo "Failed to push changes"
-          gh pr create --title "Obfuscated files" --body "Update obfuscated files" --base main --head obfuscated-files || echo "Failed to create PR"
-          gh pr merge --squash --delete-branch "obfuscated-files" || echo "Failed to enable auto-merge"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git config --local user.name "github-actions"
+            git config --local user.email "github-actions@github.com"
+            git switch -c obfuscated-files || true
+            git add .
+            git commit -m "Obfuscated files" || echo "No changes to commit"
+            git push -u origin obfuscated-files --force || echo "Failed to push changes"
+            gh pr create --title "Obfuscated files" --body "Update obfuscated files" --base main --head obfuscated-files || echo "Failed to create PR"
+            gh pr merge --squash --delete-branch "obfuscated-files" || echo "Failed to enable auto-merge"
+          else
+            echo "No changes detected, skipping PR creation"
+          fi
 
       - name: Archive output artifacts
         if: always()
