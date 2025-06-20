@@ -79,7 +79,7 @@ jobs:
           git add .
           git commit -am "Obfuscated files" || echo "No changes to commit"
           git push -u origin obfuscated-files --force || echo "Failed to push changes"
-          gh pr create --title "Obfuscated files" --body "Update obfuscated files" --base main --head obfuscated-files --merge || echo "Failed to create PR"
+          gh pr create --title "Obfuscated files" --body "Update obfuscated files" --base main --head obfuscated-files || echo "Failed to create PR"
           gh pr merge --squash --delete-branch "obfuscated-files" || echo "Failed to enable auto-merge"
 
       - name: Archive output artifacts
