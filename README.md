@@ -196,6 +196,7 @@ Scraping data using websocket is much faster and efficient it should be the go-t
 
 ## Javascript
 
-| use        | URL                   | description                                                                                |
-|------------|-----------------------|--------------------------------------------------------------------------------------------|
-| formatting | https://unminify.com/ | This formatter formats the comma operator pretty well which is constantly used throughout. |
+| use        | URL                      | description                                                                                |
+|------------|--------------------------|--------------------------------------------------------------------------------------------|
+| formatting | https://unminify.com/    | This formatter formats the comma operator pretty well which is constantly used throughout. |
+| AST        | https://astexplorer.net/ | This tool is useful for manipulating the JavaScript AST.                                   |
