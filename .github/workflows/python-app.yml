@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   build:
@@ -74,12 +75,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git status --untracked-files=all
+          ls -lah mitmproxy/src/javascript/obfuscated
+          cat mitmproxy/src/javascript/obfuscated-new-raw.js
+          
           python mitmproxy/src/python/save_obfuscated_code.py
+          
+          git status --untracked-files=all
+          ls -lah mitmproxy/src/javascript/obfuscated
+          cat mitmproxy/src/javascript/obfuscated-new-raw.js
+          
           git config --local user.name "github-actions"
           git config --local user.email "github-actions@github.com"
           git checkout -b obfuscated-files || true
+          git status
           git add .
-          git commit -am "Obfuscated files" || echo "No changes to commit"
+          git status
+          git commit -m "Obfuscated files" || echo "No changes to commit"
           git push -u origin obfuscated-files --force || echo "Failed to push changes"
           gh pr create --title "Obfuscated files" --body "Update obfuscated files" --base main --head obfuscated-files || echo "Failed to create PR"
           gh pr merge --squash --delete-branch "obfuscated-files" || echo "Failed to enable auto-merge"
