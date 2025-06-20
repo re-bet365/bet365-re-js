@@ -1,9 +1,8 @@
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
+import j from "jscodeshift";
 
 const replaceVariables = {
-    '_0x49b7bf': 'globalStateContextValues',
-    '_0x173146': 'window'
+    '_0x49b7bf': 'globalStateContextValues', '_0x173146': 'window'
 }
 
 class VariableReplacementTransformer extends AstTransformer {

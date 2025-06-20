@@ -1,6 +1,6 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-import j from 'jscodeshift';
-import {v4 as uuidv4} from 'uuid';
+import j from "jscodeshift";
+import {v4 as uuidv4} from "uuid";
 import {BracketToDotNotationTransformer} from "./refactor-obfuscated-code-jscodeshift-7";
 
 const ast = j(`

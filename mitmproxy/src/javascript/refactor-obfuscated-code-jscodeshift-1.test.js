@@ -1,6 +1,6 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-import j from 'jscodeshift';
-import {v4 as uuidv4} from 'uuid';
+import j from "jscodeshift";
+import {v4 as uuidv4} from "uuid";
 import {UnaryExpressionTransformer} from "./refactor-obfuscated-code-jscodeshift-1";
 
 const ast = j("var a = !0; var b = !1;");

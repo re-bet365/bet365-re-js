@@ -1,6 +1,6 @@
-import {glob} from 'glob';
-import fs from 'node:fs';
-import path from 'path';
+import {glob} from "glob";
+import fs from "node:fs";
+import path from "path";
 
 export function verifyFileExists(outputBaseName, stepNumber, contents) {
     const filePath = path.join(__dirname, `${outputBaseName}-${stepNumber}.js`);

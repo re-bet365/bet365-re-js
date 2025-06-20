@@ -1,5 +1,5 @@
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
+import j from "jscodeshift";
 
 class Void0Transformer extends AstTransformer {
     constructor(stepNumber, jscodeshiftAst, output, outputBaseName) {

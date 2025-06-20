@@ -1,5 +1,5 @@
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
+import j from "jscodeshift";
 
 const staleIdentifier = "_0x3d52dd";
 
