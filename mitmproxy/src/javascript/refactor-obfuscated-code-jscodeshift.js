@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from "node:fs";
 
 if (typeof __dirname === 'undefined' || !__dirname) {
     __dirname = '.';
@@ -15,7 +15,7 @@ if (!deobfuscatedJsFileName) {
 }
 
 function transform(rawObfuscatedJsCode) {
-    return new ChainedTransformer(j(rawObfuscatedJsCode), true).transform();
+    return new ChainedTransformer(j(rawObfuscatedJsCode), outputIntermediateSteps).transform();
 }
 
 const rawObfuscatedJsCode = fs.readFileSync(rawObfuscatedJsFileName).toString();

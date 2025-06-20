@@ -1,11 +1,8 @@
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
+import j from "jscodeshift";
 
 const operators = {
-    "!": [
-        [0, true],
-        [1, false]
-    ]
+    "!": [[0, true], [1, false]]
 }
 
 class UnaryExpressionTransformer extends AstTransformer {

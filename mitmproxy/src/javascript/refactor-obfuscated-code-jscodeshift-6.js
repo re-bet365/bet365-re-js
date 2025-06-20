@@ -1,5 +1,6 @@
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
+import j from "jscodeshift";
+
 const excludeOriginalName = "_0x35ab";
 // FIXME: this should be sourced from the obfuscated source code not hard coded
 const keywordArguments = {
@@ -43,9 +44,8 @@ class RemoveKeywordsTransformer extends AstTransformer {
             .remove();
         Object.entries(keywordArguments).forEach(([argument, refactoredParameterName]) => {
             this.jscodeshiftAst.find(j.CallExpression, {
-                    callee: {name: 'getKeywordName'},
-                    arguments: [{value: argument}]
-                })
+                callee: {name: 'getKeywordName'}, arguments: [{value: argument}]
+            })
                 .replaceWith(path => j.stringLiteral(refactoredParameterName));
         });
         this.jscodeshiftAst.find(j.Identifier, {name: 'keywordArray'})

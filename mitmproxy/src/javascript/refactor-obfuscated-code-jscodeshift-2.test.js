@@ -1,6 +1,6 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-import j from 'jscodeshift';
-import {v4 as uuidv4} from 'uuid';
+import j from "jscodeshift";
+import {v4 as uuidv4} from "uuid";
 import {RefactorVariableTransformer} from "./refactor-obfuscated-code-jscodeshift-2";
 
 const ast = j("var _0x1e16 = [];");

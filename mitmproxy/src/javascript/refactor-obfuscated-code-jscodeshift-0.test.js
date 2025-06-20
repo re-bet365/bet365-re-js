@@ -1,7 +1,7 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
 
-import j from 'jscodeshift';
-import {v4 as uuidv4} from 'uuid';
+import j from "jscodeshift";
+import {v4 as uuidv4} from "uuid";
 import {Void0Transformer} from "./refactor-obfuscated-code-jscodeshift-0";
 
 const ast = j("var a = void 0;");

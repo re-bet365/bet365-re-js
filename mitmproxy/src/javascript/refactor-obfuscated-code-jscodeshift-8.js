@@ -1,10 +1,7 @@
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
+import j from "jscodeshift";
 
-const removeVariables = new Set([
-    'keywords',
-    'getKeywordName',
-]);
+const removeVariables = new Set(['keywords', 'getKeywordName',]);
 
 class RemovedUnusedParametersTransformer extends AstTransformer {
     constructor(stepNumber, jscodeshiftAst, output, outputBaseName) {

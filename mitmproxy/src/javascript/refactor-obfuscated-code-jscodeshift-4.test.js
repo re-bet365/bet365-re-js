@@ -1,6 +1,6 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
-import j from 'jscodeshift';
-import {v4 as uuidv4} from 'uuid';
+import j from "jscodeshift";
+import {v4 as uuidv4} from "uuid";
 import {ParameterRefactorTransformer} from "./refactor-obfuscated-code-jscodeshift-4";
 
 const ast = j(`function first(_0x2461da) { return 0; }

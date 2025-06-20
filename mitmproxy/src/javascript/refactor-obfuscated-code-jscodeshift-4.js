@@ -1,5 +1,5 @@
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
+import j from "jscodeshift";
 
 var refactorParameters = {
     // the length of the array is the length of the expected scope

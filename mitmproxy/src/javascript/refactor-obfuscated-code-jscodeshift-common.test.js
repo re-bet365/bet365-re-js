@@ -1,7 +1,7 @@
 import {verifyFileExists} from "./refactor-obfuscated-code-jscodeshift-test-util.js";
 import {AstTransformer} from "./refactor-obfuscated-code-jscodeshift-common";
-import j from 'jscodeshift';
-import {v4 as uuidv4} from 'uuid';
+import j from "jscodeshift";
+import {v4 as uuidv4} from "uuid";
 
 const jscodeshiftAst = j("");
 
