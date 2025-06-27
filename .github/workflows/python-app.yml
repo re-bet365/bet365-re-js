@@ -97,3 +97,11 @@ jobs:
           name: output
           path: |
             output/*
+
+      - name: Archive playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            test-results/*
