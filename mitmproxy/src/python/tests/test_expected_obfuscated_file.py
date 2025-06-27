@@ -64,33 +64,51 @@ def configure_stealth_context(context):
 
 
 def handle_cloudflare_challenge(page):
-    while True:
-        # Check if we're on a Cloudflare challenge page
-        if page.locator("#challenge-running, #challenge-stage, iframe[src*='challenges.cloudflare.com']").count() == 0:
+    max_wait_time = 120  # 2 minutes maximum wait
+    start_time = time.time()
+    
+    while time.time() - start_time < max_wait_time:
+        # Check for legacy challenge selectors and new Turnstile challenge
+        legacy_challenge = page.locator("#challenge-running, #challenge-stage, iframe[src*='challenges.cloudflare.com']").count() > 0
+        turnstile_challenge = page.locator("input[name='cf-turnstile-response']").count() > 0
+        verifying_text = page.locator("text=Verifying you are human").count() > 0 or page.locator("text=Verify you are human").count() > 0
+        
+        if not (legacy_challenge or turnstile_challenge or verifying_text):
+            # No challenge detected, we can proceed
             break
 
         timestamp = datetime.now().timestamp()
         page.screenshot(path=f"{output_directory}/{timestamp}-bet365-challenge.png")
-
-        # Wait for spinner to disappear
-        page.wait_for_selector("div[class*='spinner']", state="hidden", timeout=30000)
-
-        # Handle Cloudflare iframe if present
-        iframe_locator = page.frame_locator("iframe[src*='challenges.cloudflare.com']")
-        if iframe_locator.count() > 0:
-            checkbox = iframe_locator.locator("input[type='checkbox'],div.ctp-checkbox-label")
-            if checkbox.is_visible():
-                checkbox.click()
-
-        # Wait for potential redirect after challenge
-        page.wait_for_load_state("networkidle")
+        
+        print(f"Cloudflare challenge detected at {timestamp}")
+        
+        # Wait for automatic challenge completion
+        # Modern Turnstile challenges usually solve automatically
+        page.wait_for_timeout(5000)
+        
+        # Check if challenge completed
+        try:
+            # Wait for the page to change or challenge to disappear
+            page.wait_for_function(
+                "() => !document.querySelector('input[name=\'cf-turnstile-response\']') || " +
+                "document.querySelector('input[name=\'cf-turnstile-response\']').value !== ''",
+                timeout=30000
+            )
+            print("Turnstile challenge appears to be completed")
+        except:
+            print("Turnstile challenge still in progress")
+            
+        # Wait for potential redirect
+        try:
+            page.wait_for_load_state("networkidle", timeout=10000)
+        except:
+            pass
+            
         timestamp = datetime.now().timestamp()
         page.screenshot(path=f"{output_directory}/{timestamp}-bet365-after-challenge.png")
-
-        # Check if we're still on challenge page after short wait
-        page.wait_for_timeout(5000)
-        if page.locator("#challenge-running, #challenge-stage, iframe[src*='challenges.cloudflare.com']").count() == 0:
-            break
+    
+    if time.time() - start_time >= max_wait_time:
+        print("Cloudflare challenge timeout reached")
 
 
 @pytest.fixture(scope="session")
