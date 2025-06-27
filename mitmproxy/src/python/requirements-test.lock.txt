@@ -33,7 +33,7 @@ msgpack==1.1.0
 nassl==5.3.0
 packaging==25.0
 passlib==1.7.4
-playwright==1.52.0
+playwright==1.53.0
 pluggy==1.6.0
 publicsuffix2==2.20191221
 pyasn1==0.6.1
@@ -42,7 +42,7 @@ pycparser==2.22
 pydantic==2.11.3
 pydantic_core==2.33.1
 pyee==13.0.0
-Pygments==2.19.1
+Pygments==2.19.2
 pylsqpack==0.3.22
 pyOpenSSL==25.0.0
 pyparsing==3.2.3
