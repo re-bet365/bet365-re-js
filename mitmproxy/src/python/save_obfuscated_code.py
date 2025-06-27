@@ -30,7 +30,7 @@ def copy_obfuscated_js():
     shutil.copy2(first_obfuscated_js_file, target_file)
     if os.path.lexists(obfuscated_file):
         os.unlink(obfuscated_file)
-    os.symlink(target_file, obfuscated_file)
+    os.symlink(os.path.relpath(target_file, obfuscated_file.parent), obfuscated_file)
 
 
 if __name__ == "__main__":

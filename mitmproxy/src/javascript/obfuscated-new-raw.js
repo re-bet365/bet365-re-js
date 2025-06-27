@@ -1,1 +1,1 @@
-/home/runner/work/bet365-re-js/bet365-re-js/mitmproxy/src/javascript/obfuscated/1750403535.2563589-received-15.js
+obfuscated/1750403535.2563589-received-15.js
